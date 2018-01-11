@@ -3,7 +3,8 @@ import { View } from 'react-native';
 
 const CardSection = (props) => {
     return (
-        <View style={styles.containerStyle}>
+        // O que está mais a direita no array sobrepoem os demais styles
+        <View style={[styles.containerStyle, props.style]}>
             {props.children}
         </View>
     );
