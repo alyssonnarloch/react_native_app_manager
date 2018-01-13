@@ -2,7 +2,8 @@ import firebase from 'firebase';
 import { Actions } from 'react-native-router-flux';
 import {
     EMPLOYEE_UPDATE,
-    EMPLOYEE_CREATE
+    EMPLOYEE_CREATE, 
+    EMPLOYEES_FETCH_SUCCESS
 } from './types';
 
 export const employeeUpdate = ({ prop, value }) => {
@@ -22,6 +23,19 @@ export const employeeCreate = ({ name, phone, shift }) => {
                 // Limpa os valores dos campos do form
                 dispatch({ type: EMPLOYEE_CREATE });
                 Actions.pop();
+            });
+    };
+};
+
+
+export const employeesFetch = () => {
+    const { currentUser } = firebase.auth();
+
+    return (dispatch) => {
+        // Toda vez que é adicionado um registro o "dispatch" é chamado
+        firebase.database().ref(`/users/${currentUser.uid}/employees`)
+            .on('value', snapshot => {
+                dispatch({ type: EMPLOYEES_FETCH_SUCCESS, payload: snapshot.val() });
             });
     };
 };
