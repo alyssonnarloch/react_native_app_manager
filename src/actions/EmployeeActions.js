@@ -53,3 +53,16 @@ export const employeeSave = ({ name, phone, shift, uid }) => {
             });
     };
 };
+
+export const employeeDelete = ({ uid }) => {
+    const { currentUser } = firebase.auth();
+    // Dispatch não é necessário pois irá chamar o employeeList que já irá
+    // atualizar a tela
+    return () => {
+        firebase.database().ref(`/users/${currentUser.uid}/employees/${uid}`)
+            .remove()
+            .then(() => {
+                Actions.pop();
+            });
+    };
+};
